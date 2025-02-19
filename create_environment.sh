@@ -14,7 +14,7 @@ mkdir -p "$main_dir"
 # Once the directory is created the following subdirectories and files will be inside it
 mkdir -p "$main_dir"/{app,modules,assets,config}
 
-# Create reminder.sh in the app subdirectorie with execute permissions
+# Create reminder.sh in the app subdirectory with execute permissions
 cat > "$main_dir/app/reminder.sh" << 'EOL'
 #!/bin/bash
 
@@ -36,7 +36,7 @@ EOL
 # Make the reminder.sh executable
 chmod +x "$main_dir/app/reminder.sh"
 
-# Create submission.txt in the assets subdirectorie
+# Create submission.txt in the assets subdirectory
 cat > "$main_dir/assets/submissions.txt" << 'EOL'
 student, assignment, submission status
 Chinemerem, Shell Navigation, not submitted
@@ -50,14 +50,14 @@ Cindy, Git, submitted
 Nikki, Shell Navigation, not submitted
 EOL
 
-# Create config.env in the config subdirectorie
+# Create config.env in the config subdirectory
 cat > "$main_dir/config/config.env" << 'EOL'
 # This is the config file
 ASSIGNMENT="Shell Navigation"
 DAYS_REMAINING=2
 EOL
 
-# Create functions.sh in the modules subdirectorie
+# Create functions.sh in the modules subdirectory
 cat > "$main_dir/modules/functions.sh" << 'EOL'
 #!/bin/bash
 
@@ -100,7 +100,7 @@ main_dir=$(dirname "$0")
 required_files=(
     "$main_dir/config/config.env"
     "$main_dir/modules/functions.sh"
-    "$main_dir/assets/submissions.txt"# Submission data storage file
+    "$main_dir/assets/submissions.txt"
 )
 
 # Validate existence of all required files
@@ -133,5 +133,5 @@ echo "--------------------------------------------"
 exit 0
 EOL
 
+# Make startup.sh executable
 chmod +x "$main_dir/startup.sh"
-
