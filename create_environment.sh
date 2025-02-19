@@ -1,10 +1,20 @@
 #!/bin/bash
 # A shell script named that sets up the directory structure for an application called submission_reminder_app
 
-# Uses the read command to get user input
+# Validate user input
+validate_name() {
+    local name=$1
+    if [[ ! $name =~ ^[a-zA-Z][a-zA-Z0-9_-]*$ ]]; then
+        echo "Error: Name must start with a letter and contain only letters, numbers, underscores, or hyphens"
+        exit 1
+    fi
+}
+
+# Get user input with validation
 # -p flag allows displaying a prompt message
 # The input is stored in the variable user_name
 read -p "Please enter your name: " user_name
+validate_name "$user_name"
 
 # Uses mkdir to create a directory with the user_name
 # -p flag prevents errors if directory already exists
@@ -113,8 +123,9 @@ for file in "${required_files[@]}"; do
 done
 
 # Source environment variables and helper functions
-source "$main_dir/config/config.env"
-source "$main_dir/modules/functions.sh"
+# With error handling
+source "$main_dir/config/config.env" || handle_error "Failed to load config"
+source "$main_dir/modules/functions.sh" || handle_error "Failed to load functions"
 
 # Verify that critical environment variables are set
 # ASSIGNMENT and DAYS_REMAINING must be defined in config.env
