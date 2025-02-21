@@ -48,9 +48,9 @@ submission_reminder_<yourname>/
 └── startup.sh            # Application entry point
 ```
 
-### Script Explanations
+## Script Explanations
 
-Below is a breakdown of the scripts:
+### Below is a breakdown of the scripts:
 
 #### create_environment.sh  
 - Sets up the initial directory structure  
