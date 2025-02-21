@@ -90,3 +90,17 @@ The application handles common errors:
 - Invalid user input
 - Configuration issues
 - File permission problems
+
+# Upgrades
+
+- **reminder.sh**:  
+  Updated the script so that it runs correctly from any directory by determining the absolute path of the script. This change ensures that the script can be run from any location without needing to navigate to the script's directory.
+
+- **config.env**:  
+  Uses default expansion for `ASSIGNMENT` (`ASSIGNMENT=${ASSIGNMENT:-"Shell Navigation"}`) so that if the user makes a selection in startup.sh, that choice overrides the default.
+
+- **functions.sh**:  
+  Added an echo statement (`echo "--------------------------------------------"`) on line 7 to improve output formatting and enhance script readability.
+
+- **startup.sh**:  
+  Included a user prompt for assignment selection, allowing the user to choose their desired assignment and override the default value provided in config.env.
