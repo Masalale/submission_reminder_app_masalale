@@ -24,7 +24,7 @@ mkdir -p "$main_dir"
 # Once the directory is created the following subdirectories and files will be inside it
 mkdir -p "$main_dir"/{app,modules,assets,config}
 
-# Create reminder.sh in the app subdirectory with execute permissions
+# Create reminder.sh with default content in the app subdirectory with execute permissions
 cat > "$main_dir/app/reminder.sh" << 'EOL'
 #!/bin/bash
 
@@ -46,13 +46,17 @@ EOL
 # Make the reminder.sh executable
 chmod +x "$main_dir/app/reminder.sh"
 
-# Create submission.txt in the assets subdirectory
+# Create submission.txt with default content in the assets subdirectory
 cat > "$main_dir/assets/submissions.txt" << 'EOL'
 student, assignment, submission status
 Chinemerem, Shell Navigation, not submitted
 Chiagoziem, Git, submitted
 Divine, Shell Navigation, not submitted
 Anissa, Shell Basics, submitted
+EOL
+
+# Concatenate 5 new student records to submissions.txt
+cat >> "$main_dir/assets/submissions.txt" << 'EOL'
 Ngash, Git Basics, not submitted
 Brian, Shell Navigation, submitted
 Winnie, Shell Basics, not submitted
@@ -60,14 +64,14 @@ Cindy, Git, submitted
 Nikki, Shell Navigation, not submitted
 EOL
 
-# Create config.env in the config subdirectory
+# Create config.env with default content in the config subdirectory
 cat > "$main_dir/config/config.env" << 'EOL'
 # This is the config file
 ASSIGNMENT="Shell Navigation"
 DAYS_REMAINING=2
 EOL
 
-# Create functions.sh in the modules subdirectory
+# Create functions.sh with default content in the modules subdirectory
 cat > "$main_dir/modules/functions.sh" << 'EOL'
 #!/bin/bash
 
@@ -94,7 +98,7 @@ EOL
 # Make functions.sh executable
 chmod +x "$main_dir/modules/functions.sh"
 
-# Create startup.sh in the root directory and make it executable
+# Create startup.sh with default content in the root directory and make it executable
 cat > "$main_dir/startup.sh" << 'EOL'
 #!/bin/bash
 
