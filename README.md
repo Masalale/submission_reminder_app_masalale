@@ -29,10 +29,8 @@ chmod +x create_environment.sh
 
 ```bash
 # Navigate to your personalized reminder directory
-cd submission_reminder_<yourname>
-
 # Start the application
-./startup.sh
+cd ./submission_reminder_<yourname>/startup.sh
 ```
 
 ## File Structure
@@ -50,38 +48,39 @@ submission_reminder_<yourname>/
 └── startup.sh            # Application entry point
 ```
 
-## Script Explanations
+### Script Explanations
 
-### create_environment.sh
-- Sets up the initial directory structure
-- Creates necessary subdirectories and files
-- Configures file permissions
+Below is a breakdown of the scripts:
+
+#### create_environment.sh  
+- Sets up the initial directory structure  
+- Creates necessary subdirectories and files  
+- Configures file permissions  
 - Takes user input for personalization
 
-### startup.sh
-- Entry point for the application
-- Validates required files and dependencies
-- Sources configuration and functions
+#### startup.sh  
+- Serves as the entry point for the application  
+- Validates required files and dependencies  
+- Sources configuration and functions  
 - Launches the reminder system
 
-### reminder.sh
-- Processes submission status
-- Displays reminders for pending submissions
-- Reads from submissions.txt
-- Uses configuration from config.env
+#### reminder.sh  
+- Processes submission status  
+- Displays reminders for pending submissions  
+- Reads data from submissions.txt  
+- Utilizes configurations from config.env
 
-### functions.sh
-- Contains core functionality
-- Implements submission checking logic
-- Provides utility functions
-- Handles data processing
+#### functions.sh  
+- Contains core functionality for submission checking  
+- Implements various utility functions  
+- Handles data processing tasks
 
 ## Configuration
 
 The `config.env` file contains:
 ```bash
-ASSIGNMENT="Shell Navigation"    # Current assignment being tracked
-DAYS_REMAINING=2                # Days until submission deadline
+ASSIGNMENT=${ASSIGNMENT:-"Shell Navigation"} # Current assignment being tracked
+DAYS_REMAINING=2 # Days until submission deadline
 ```
 
 ## Error Handling

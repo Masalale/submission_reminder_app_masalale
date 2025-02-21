@@ -24,35 +24,44 @@ mkdir -p "$main_dir"
 # Once the directory is created the following subdirectories and files will be inside it
 mkdir -p "$main_dir"/{app,modules,assets,config}
 
-# Create reminder.sh in the app subdirectory with execute permissions
+# Create reminder.sh with default content in the app subdirectory with execute permissions
 cat > "$main_dir/app/reminder.sh" << 'EOL'
 #!/bin/bash
 
-# Source environment variables and helper functions
-source ./config/config.env
-source ./modules/functions.sh
+# Store the directory path where this script is located
+main_dir=$(dirname "$0")
+# The parent directory of 'app'
+parent_dir="$(dirname "$main_dir")"
 
-# Path to the submissions file
-submissions_file="./assets/submissions.txt"
+# Source environment variables and helper functions from parent directories
+source "$parent_dir/config/config.env" || { echo "Failed to load config"; exit 1; }
+source "$parent_dir/modules/functions.sh" || { echo "Failed to load functions"; exit 1; }
+
+# Path to the submissions file from parent directory
+submissions_file="$parent_dir/assets/submissions.txt"
 
 # Print remaining time and run the reminder function
 echo "Assignment: $ASSIGNMENT"
 echo "Days remaining to submit: $DAYS_REMAINING days"
 echo "--------------------------------------------"
 
-check_submissions $submissions_file
+check_submissions "$submissions_file"
 EOL
 
 # Make the reminder.sh executable
 chmod +x "$main_dir/app/reminder.sh"
 
-# Create submission.txt in the assets subdirectory
+# Create submission.txt with default content in the assets subdirectory
 cat > "$main_dir/assets/submissions.txt" << 'EOL'
 student, assignment, submission status
 Chinemerem, Shell Navigation, not submitted
 Chiagoziem, Git, submitted
 Divine, Shell Navigation, not submitted
 Anissa, Shell Basics, submitted
+EOL
+
+# Concatenate 5 new student records to submissions.txt
+cat >> "$main_dir/assets/submissions.txt" << 'EOL'
 Ngash, Git Basics, not submitted
 Brian, Shell Navigation, submitted
 Winnie, Shell Basics, not submitted
@@ -60,14 +69,14 @@ Cindy, Git, submitted
 Nikki, Shell Navigation, not submitted
 EOL
 
-# Create config.env in the config subdirectory
+# Create config.env with default content in the config subdirectory
 cat > "$main_dir/config/config.env" << 'EOL'
 # This is the config file
-ASSIGNMENT="Shell Navigation"
+ASSIGNMENT=${ASSIGNMENT:-"Shell Navigation"}
 DAYS_REMAINING=2
 EOL
 
-# Create functions.sh in the modules subdirectory
+# Create functions.sh with default content in the modules subdirectory
 cat > "$main_dir/modules/functions.sh" << 'EOL'
 #!/bin/bash
 
@@ -75,6 +84,7 @@ cat > "$main_dir/modules/functions.sh" << 'EOL'
 function check_submissions {
     local submissions_file=$1
     echo "Checking submissions in $submissions_file"
+    echo "--------------------------------------------"
 
     # Skip the header and iterate through the lines
     while IFS=, read -r student assignment status; do
@@ -89,6 +99,7 @@ function check_submissions {
         fi
     done < <(tail -n +2 "$submissions_file") # Skip the header
 }
+
 EOL
 
 # Make functions.sh executable
@@ -98,15 +109,10 @@ chmod +x "$main_dir/modules/functions.sh"
 cat > "$main_dir/startup.sh" << 'EOL'
 #!/bin/bash
 
-# startup.sh - Main entry point for the submission reminder application
-# This script checks for required files, loads configurations, and launches the reminder system
-
 # Store the directory path where this script is located
-# This ensures relative paths work correctly regardless of where the script is called from
 main_dir=$(dirname "$0")
 
 # Define an array of critical files that must exist for the application to run
-# These include configuration files, function libraries, and data storage
 required_files=(
     "$main_dir/config/config.env"
     "$main_dir/modules/functions.sh"
@@ -114,7 +120,6 @@ required_files=(
 )
 
 # Validate existence of all required files
-# Exit with error if any file is missing
 for file in "${required_files[@]}"; do
     if [ ! -f "$file" ]; then
         echo "Error: $(basename "$file") not found!"
@@ -122,25 +127,53 @@ for file in "${required_files[@]}"; do
     fi
 done
 
-# Source environment variables and helper functions
-# With error handling
-source "$main_dir/config/config.env" || handle_error "Failed to load config"
+# Source helper functions
 source "$main_dir/modules/functions.sh" || handle_error "Failed to load functions"
 
-# Verify that critical environment variables are set
-# ASSIGNMENT and DAYS_REMAINING must be defined in config.env
-[[ -z "${ASSIGNMENT}${DAYS_REMAINING}" ]] && {
-    echo "Configuration Error: Please ensure ASSIGNMENT and DAYS_REMAINING variables are properly set in config.env file"
-    exit 1
-}
+# Prompt user for assignment selection
+echo "Please select an assignment:"
+echo "1) Shell Navigation (default)"
+echo "2) Git"
+echo "3) Shell Basics"
+read -p "Enter your choice (1-3) [1]: " choice
 
-# Visual separator for better readability in terminal output
+# Set ASSIGNMENT based on user selection
+# Default to 1 if no choice is made (empty input)
+choice=${choice:-1}
+
+case $choice in
+    1)
+        ASSIGNMENT="Shell Navigation"
+        ;;
+    2)
+        ASSIGNMENT="Git"
+        ;;
+    3)
+        ASSIGNMENT="Shell Basics"
+        ;;
+    *)
+        echo "Invalid selection. Please choose 1, 2, or 3."
+        exit 1
+        ;;
+esac
+
+# Export the user-selected ASSIGNMENT
+export ASSIGNMENT
+
+# Source config.env; it uses default expansion so ASSIGNMENT remains unchanged
+source "$main_dir/config/config.env" || handle_error "Failed to load config"
+
+# Verify DAYS_REMAINING is set
+if [[ -z "${DAYS_REMAINING}" ]]; then
+    echo "Configuration Error: Please ensure DAYS_REMAINING variable is properly set in config.env file"
+    exit 1
+fi
+
 echo "--------------------------------------------"
 
 # Launch the main reminder application
 "$main_dir/app/reminder.sh"
 
-# Exit successfully if everything runs without errors
 exit 0
 EOL
 
