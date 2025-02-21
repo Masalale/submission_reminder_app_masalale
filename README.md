@@ -52,29 +52,30 @@ submission_reminder_<yourname>/
 
 ## Script Explanations
 
-### create_environment.sh
-- Sets up the initial directory structure
-- Creates necessary subdirectories and files
-- Configures file permissions
+### Below is a breakdown of the scripts:
+
+#### create_environment.sh  
+- Sets up the initial directory structure  
+- Creates necessary subdirectories and files  
+- Configures file permissions  
 - Takes user input for personalization
 
-### startup.sh
-- Entry point for the application
-- Validates required files and dependencies
-- Sources configuration and functions
+#### startup.sh  
+- Serves as the entry point for the application  
+- Validates required files and dependencies  
+- Sources configuration and functions  
 - Launches the reminder system
 
-### reminder.sh
-- Processes submission status
-- Displays reminders for pending submissions
-- Reads from submissions.txt
-- Uses configuration from config.env
+#### reminder.sh  
+- Processes submission status  
+- Displays reminders for pending submissions  
+- Reads data from submissions.txt  
+- Utilizes configurations from config.env
 
-### functions.sh
-- Contains core functionality
-- Implements submission checking logic
-- Provides utility functions
-- Handles data processing
+#### functions.sh  
+- Contains core functionality for submission checking  
+- Implements various utility functions  
+- Handles data processing tasks
 
 ## Configuration
 
